@@ -44,3 +44,6 @@ next-env.d.ts
 apis.md
 SpeakForward说明文档.md
 .env*.local
+
+.vercel
+.env*
