@@ -14,15 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-// Memo 程序（SPL Memo v2）：与 SystemProgram.transfer 同交易提交（§2.3 链上锚定方式）
+// SPL Memo program: submitted in the same transaction as SystemProgram.transfer (§2.3)
 const MEMO_PROGRAM_ID = new PublicKey(
   "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr",
 );
 
 const PRESET_AMOUNTS = [0.01, 0.05, 0.1];
 
-// §2.2: 点对点直接捐赠 —— SOL 从捐赠者钱包直接到创作者钱包，
-// 平台全程不碰资金；交易由捐赠者自己的 Phantom 签名。
+// §2.2: peer-to-peer direct donation — SOL goes from the donor's wallet
+// straight to the creator's wallet; the platform never touches funds.
 export function DonateButton({
   projectId,
   creatorWallet,
@@ -63,7 +63,7 @@ export function DonateButton({
       const signature = await sendTransaction(tx, connection);
       await connection.confirmTransaction(signature, "confirmed");
 
-      // 链上验证后记录到公开账本（失败不阻断：资金转移本身已完成）
+      // Record to the public ledger after on-chain verification
       await fetch(`/api/projects/${projectId}/pledge`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,10 +74,11 @@ export function DonateButton({
         }),
       });
 
-      toast.success("捐赠已完成", {
-        description: "SOL 已直接到达创作者钱包，平台未经手任何资金。",
+      toast.success("Donation complete", {
+        description:
+          "SOL was sent directly to the creator's wallet. The platform never touched it.",
         action: {
-          label: "查看交易",
+          label: "View transaction",
           onClick: () =>
             window.open(
               `https://explorer.solana.com/tx/${signature}?cluster=devnet`,
@@ -86,7 +87,7 @@ export function DonateButton({
         },
       });
     } catch (err) {
-      toast.error(`捐赠失败: ${err instanceof Error ? err.message : String(err)}`);
+      toast.error(`Donation failed: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setBusy(false);
     }
@@ -116,14 +117,14 @@ export function DonateButton({
       </div>
       <Button className="w-full" disabled={busy} onClick={donate}>
         {busy
-          ? "交易处理中…"
+          ? "Processing transaction…"
           : connected
-            ? `直接捐赠 ${amount} SOL（Devnet）`
-            : "连接 Phantom 并捐赠"}
+            ? `Donate ${amount} SOL directly (Devnet)`
+            : "Connect Phantom & donate"}
       </Button>
       <p className="text-xs text-muted-foreground">
-        Devnet 测试币，无真实价值。SOL 由你的钱包直接转入创作者钱包，
-        本平台不持有、不路由、不托管任何资金。
+        Devnet test SOL — no real value. SOL is sent from your wallet directly
+        to the creator. This platform never holds, routes, or custodies funds.
       </p>
     </div>
   );

@@ -11,8 +11,8 @@ interface PromiseRecord {
   createdAt: string;
 }
 
-// §2.2 用户体验兜底：没有 Solana 钱包的捐赠者使用"捐赠承诺"，
-// 仅记录在本地 localStorage，不执行链上交易，需清晰标注为模拟功能。
+// §2.2 fallback UX: donors without a Solana wallet use a "pledge",
+// stored only in localStorage — clearly labeled as a simulated feature.
 export function PledgeButton({ projectId }: { projectId: string }) {
   const [amount, setAmount] = useState("0.05");
   const [pledged, setPledged] = useState(false);
@@ -24,7 +24,7 @@ export function PledgeButton({ projectId }: { projectId: string }) {
       const list = JSON.parse(raw) as PromiseRecord[];
       setPledged(list.some((p) => p.projectId === projectId));
     } catch {
-      // 忽略损坏的本地数据
+      // ignore corrupted local data
     }
   }, [projectId]);
 
@@ -36,16 +36,16 @@ export function PledgeButton({ projectId }: { projectId: string }) {
     list.push({ projectId, amountSol, createdAt: new Date().toISOString() });
     window.localStorage.setItem("speakforward_pledges", JSON.stringify(list));
     setPledged(true);
-    toast.success("已记录捐赠承诺（模拟）", {
+    toast.success("Pledge recorded (simulated)", {
       description:
-        "承诺仅保存在你的浏览器本地。安装 Phantom 钱包后可完成真正的链上捐赠。",
+        "Your pledge is stored only in this browser. Install a Phantom wallet to complete a real on-chain donation.",
     });
   };
 
   if (pledged) {
     return (
       <div className="rounded-md border bg-muted px-3 py-2 text-sm text-muted-foreground">
-        ✅ 你已承诺支持本项目（本地记录，模拟功能）
+        ✅ You have pledged to support this project (local record · simulated)
       </div>
     );
   }
@@ -62,11 +62,12 @@ export function PledgeButton({ projectId }: { projectId: string }) {
           className="h-9 w-28"
         />
         <Button variant="secondary" className="flex-1" onClick={pledge}>
-          捐赠承诺（模拟）
+          Pledge (simulated)
         </Button>
       </div>
       <p className="text-xs text-muted-foreground">
-        没有钱包？承诺仅记录在你的浏览器 localStorage，不产生任何链上交易。
+        No wallet? A pledge is stored only in your browser&apos;s localStorage —
+        no on-chain transaction is made.
       </p>
     </div>
   );

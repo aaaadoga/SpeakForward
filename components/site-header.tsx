@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
@@ -36,23 +36,23 @@ export function SiteHeader() {
       </Link>
       <nav className="flex items-center gap-2">
         <Button variant="ghost" render={<Link href="/ethics" />}>
-          伦理设计
+          Ethics
         </Button>
         {ready && (email ? (
           <>
             <Button variant="ghost" render={<Link href="/create" />}>
-              创建项目
+              Create project
             </Button>
             <span className="hidden max-w-40 truncate text-sm text-muted-foreground sm:inline">
               {email}
             </span>
             <Button variant="outline" size="sm" onClick={signOut}>
-              退出
+              Sign out
             </Button>
           </>
         ) : (
           <Button size="sm" render={<Link href="/login" />}>
-            登录 / 注册
+            Sign in
           </Button>
         ))}
       </nav>

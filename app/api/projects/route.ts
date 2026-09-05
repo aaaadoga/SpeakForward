@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) {
-    return NextResponse.json({ error: "请先登录" }, { status: 401 });
+    return NextResponse.json({ error: "Please sign in first" }, { status: 401 });
   }
 
   // §2.1: 年龄自我声明必须已完成
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     .eq("id", userData.user.id)
     .single();
   if (!profile?.age_declared) {
-    return NextResponse.json({ error: "请先完成年龄自我声明" }, { status: 403 });
+    return NextResponse.json({ error: "Please complete the age self-declaration first" }, { status: 403 });
   }
 
   const body = (await request.json()) as CreateProjectBody;
@@ -45,13 +45,13 @@ export async function POST(request: Request) {
   // §2.4: 健康原因声明为必填 —— 公开展示是产品特性而非隐私侵犯
   if (!title || !visionText || !healthReason || !persona) {
     return NextResponse.json(
-      { error: "标题、愿景文本、健康原因声明与人格选择均为必填" },
+      { error: "Title, vision text, health statement and persona are all required" },
       { status: 400 },
     );
   }
   if (visionText.length > MAX_VISION_CHARS) {
     return NextResponse.json(
-      { error: `愿景文本超过 ${MAX_VISION_CHARS} 字符上限` },
+      { error: `Vision text exceeds the ${MAX_VISION_CHARS} character limit` },
       { status: 400 },
     );
   }
@@ -113,7 +113,7 @@ export async function POST(request: Request) {
       upsert: false,
     });
   if (uploadError) {
-    return NextResponse.json({ error: `音频上传失败: ${uploadError.message}` }, { status: 500 });
+    return NextResponse.json({ error: `Audio upload failed: ${uploadError.message}` }, { status: 500 });
   }
 
   const { data: project, error: dbError } = await admin

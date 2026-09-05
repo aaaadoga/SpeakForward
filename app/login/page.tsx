@@ -22,7 +22,7 @@ export default function LoginPage() {
   const sendMagicLink = async () => {
     const trimmed = email.trim();
     if (!trimmed || !trimmed.includes("@")) {
-      setError("请输入有效的邮箱地址");
+      setError("Please enter a valid email address");
       return;
     }
     setBusy(true);
@@ -37,7 +37,7 @@ export default function LoginPage() {
     });
     setBusy(false);
     if (otpError) {
-      setError(`发送失败: ${otpError.message}`);
+      setError(`Failed to send: ${otpError.message}`);
       return;
     }
     setSent(true);
@@ -47,21 +47,23 @@ export default function LoginPage() {
     <div className="mx-auto flex w-full max-w-md flex-1 items-center px-6 py-16">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>登录 / 注册</CardTitle>
+          <CardTitle>Sign in / Sign up</CardTitle>
           <CardDescription>
-            仅需邮箱，无需密码。首次登录将自动创建账号。
+            Email only — no password. Your account is created automatically on
+            first sign-in.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           {sent ? (
             <div className="space-y-3">
               <p className="text-sm">
-                ✉️ 魔法链接已发送至 <b>{email}</b>
-                ，请查收邮件并点击链接完成登录。
+                ✉️ A magic link was sent to <b>{email}</b>. Open it to finish
+                signing in.
               </p>
               <p className="text-xs text-muted-foreground">
-                若几分钟内未收到，请检查垃圾邮件文件夹。免费版邮件服务有每小时发送限制，
-                高峰期可能稍有延迟。
+                Didn&apos;t get it within a few minutes? Check your spam folder.
+                The free email service has an hourly sending limit, so it may
+                take a moment.
               </p>
             </div>
           ) : (
@@ -75,13 +77,13 @@ export default function LoginPage() {
               />
               {error && <p className="text-sm text-red-600">{error}</p>}
               <Button className="w-full" disabled={busy} onClick={sendMagicLink}>
-                {busy ? "发送中…" : "发送魔法链接"}
+                {busy ? "Sending…" : "Send magic link"}
               </Button>
             </>
           )}
           <p className="text-xs text-muted-foreground">
-            注册即表示你已知悉：{IDENTITY_DISCLAIMER_TEXT}
-            平台仅要求邮箱与年龄自我声明，不验证身份（§2.1）。
+            By signing up you acknowledge: {IDENTITY_DISCLAIMER_TEXT} The
+            platform only asks for an email and an age self-declaration (§2.1).
           </p>
         </CardContent>
       </Card>

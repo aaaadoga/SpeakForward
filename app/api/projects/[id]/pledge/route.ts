@@ -17,7 +17,7 @@ export async function POST(
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
   if (!userData.user) {
-    return NextResponse.json({ error: "记录捐赠需要先登录" }, { status: 401 });
+    return NextResponse.json({ error: "Sign in to record a donation" }, { status: 401 });
   }
 
   const body = (await request.json()) as {
@@ -29,7 +29,7 @@ export async function POST(
   const donorWallet = (body.donor_wallet ?? "").trim();
   const amountSol = Number(body.amount_sol ?? 0);
   if (!txSignature || !donorWallet || !(amountSol > 0)) {
-    return NextResponse.json({ error: "参数不完整" }, { status: 400 });
+    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
   }
 
   // 查项目与创作者收款地址
@@ -41,7 +41,7 @@ export async function POST(
     .single();
   if (!project?.creator_wallet) {
     return NextResponse.json(
-      { error: "项目不存在或未设置收款钱包" },
+      { error: "Project not found or no receiving wallet set" },
       { status: 404 },
     );
   }
@@ -50,14 +50,14 @@ export async function POST(
   const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
   const tx = await connection.getParsedTransaction(txSignature, "confirmed");
   if (!tx) {
-    return NextResponse.json({ error: "链上未找到该交易" }, { status: 400 });
+    return NextResponse.json({ error: "Transaction not found on-chain" }, { status: 400 });
   }
   const creatorKey = new PublicKey(project.creator_wallet);
   const accountKeys = tx.transaction.message.accountKeys.map((k) => k.pubkey);
   const paidToCreator = accountKeys.some((key) => key.equals(creatorKey));
   if (!paidToCreator) {
     return NextResponse.json(
-      { error: "交易未涉及创作者钱包地址" },
+      { error: "Transaction does not involve the creator's wallet" },
       { status: 400 },
     );
   }

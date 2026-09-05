@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
@@ -90,7 +90,7 @@ export default function CreatePage() {
     healthReason.trim() &&
     personaId;
 
-  // §5: Web Speech API 免费预览 —— 调试与写作时零 ElevenLabs 额度消耗
+  // §5: free preview via Web Speech API — zero ElevenLabs credits while writing
   const [previewing, setPreviewing] = useState(false);
   const previewWithWebSpeech = () => {
     if (previewing) {
@@ -105,8 +105,9 @@ export default function CreatePage() {
     setPreviewing(true);
   };
 
-  // §2.3: 链上锚定 —— Memo 指令携带内容元数据哈希 + 创作者钱包 + 时间戳，
-  // 自转 0 SOL，仅支付标准交易费。禁止部署自定义程序（§2.3）。
+  // §2.3: on-chain anchor — a Memo instruction carries the content hash +
+  // creator wallet + timestamp; self-transfer of 0 SOL pays only the fee.
+  // Deploying custom programs is forbidden (§2.3).
   const anchorToChain = async () => {
     if (!connected || !publicKey || !signTransaction) {
       setVisible(true);
@@ -143,10 +144,10 @@ export default function CreatePage() {
       const signature = await connection.sendRawTransaction(signed.serialize());
       await connection.confirmTransaction(signature, "confirmed");
       setAnchorSig(signature);
-      toast.success("锚定成功", {
-        description: "Memo 交易已上链，可在 Devnet 浏览器验证。",
+      toast.success("Anchored on-chain", {
+        description: "The Memo transaction is live — verify it on the Devnet explorer.",
         action: {
-          label: "查看",
+          label: "View",
           onClick: () =>
             window.open(
               `https://explorer.solana.com/tx/${signature}?cluster=devnet`,
@@ -155,8 +156,9 @@ export default function CreatePage() {
         },
       });
     } catch (err) {
-      // §5: 锚定失败不阻塞核心流程 —— 项目仍可发布（anchor 留空）
-      toast.warning(`锚定失败，可跳过直接发布: ${err instanceof Error ? err.message : String(err)}`);
+      // §5: anchoring failure must not block publishing — the project can
+      // still go live without an anchor
+      toast.warning(`Anchoring failed — you can publish without it: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setAnchoring(false);
     }
@@ -180,14 +182,15 @@ export default function CreatePage() {
     setSubmitting(false);
     const data = await res.json();
     if (!res.ok) {
-      toast.error(`发布失败: ${data.error ?? res.statusText}`);
+      toast.error(`Publishing failed: ${data.error ?? res.statusText}`);
       return;
     }
     if (data.tts_degraded) {
-      // §5: ElevenLabs 失败时项目已落库，项目页将以"临时语音引擎"呈现
-      toast.warning("语音引擎暂时不可用，项目已发布为'临时语音引擎'模式");
+      // §5: if ElevenLabs failed, the project is still live in
+      // "temporary voice engine" mode
+      toast.warning("Voice engine temporarily unavailable — published in temporary voice engine mode");
     } else {
-      toast.success("项目已发布");
+      toast.success("Project published");
     }
     router.push(`/projects/${data.id}`);
   };
@@ -195,7 +198,7 @@ export default function CreatePage() {
   if (!ready) {
     return (
       <div className="flex flex-1 items-center justify-center py-20 text-muted-foreground">
-        加载中…
+        Loading…
       </div>
     );
   }
@@ -203,9 +206,9 @@ export default function CreatePage() {
   if (!loggedIn) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 py-20">
-        <p className="text-muted-foreground">请先登录后再创建项目。</p>
+        <p className="text-muted-foreground">Please sign in to create a project.</p>
         <Button render={<a href="/login" />}>
-          前往登录
+          Go to sign in
         </Button>
       </div>
     );
@@ -217,18 +220,19 @@ export default function CreatePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>分享你的愿景</CardTitle>
+          <CardTitle>Share your vision</CardTitle>
           <CardDescription>
-            写下你想说的话，AI 语音将替你发声。
-            你提交的健康原因说明将<b>公开展示</b>在项目页 —— 这使基于社区的信任成为可能（§2.4）。
+            Write what you want to say — an AI voice will speak it for you.
+            Your health statement is <b>publicly displayed</b> on the project
+            page: that is what makes community-based trust possible (§2.4).
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="title">项目标题</Label>
+            <Label htmlFor="title">Project title</Label>
             <Input
               id="title"
-              placeholder="例如：为气候行动发声"
+              placeholder="e.g. Speaking up for my city, for our sky"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               maxLength={80}
@@ -237,7 +241,7 @@ export default function CreatePage() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="vision">你想说的话（将由 AI 语音朗读）</Label>
+              <Label htmlFor="vision">What you want to say (read aloud by AI)</Label>
               <span
                 className={
                   "text-xs " + (overLimit ? "font-bold text-red-600" : "text-muted-foreground")
@@ -249,7 +253,7 @@ export default function CreatePage() {
             <Textarea
               id="vision"
               rows={7}
-              placeholder="写下你的愿景、你为什么发声、你希望世界如何改变…"
+              placeholder="Write your vision, why you are speaking up, and how you hope the world will change…"
               value={visionText}
               onChange={(e) => setVisionText(e.target.value)}
             />
@@ -260,27 +264,28 @@ export default function CreatePage() {
               disabled={!visionText.trim()}
               onClick={previewWithWebSpeech}
             >
-              {previewing ? "⏹ 停止预览" : "🔊 免费预览（浏览器合成，不消耗AI额度）"}
+              {previewing ? "⏹ Stop preview" : "🔊 Free preview (browser synthesis, no AI credits used)"}
             </Button>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="health">健康原因公开说明（必填，将公开展示）</Label>
+            <Label htmlFor="health">Health statement (required, publicly shown)</Label>
             <Textarea
               id="health"
               rows={3}
-              placeholder="例如：声带损伤导致无法长时间说话 / 慢性疲劳综合征 / 渐冻症早期…"
+              placeholder="e.g. Vocal cord injury — cannot sustain more than a minute of continuous speech / chronic fatigue syndrome / early-stage ALS…"
               value={healthReason}
               onChange={(e) => setHealthReason(e.target.value)}
               maxLength={300}
             />
             <p className="text-xs text-muted-foreground">
-              {IDENTITY_DISCLAIMER_TEXT} 简短说明即可，这将成为社区信任你的基础。
+              {IDENTITY_DISCLAIMER_TEXT} A short statement is enough — it
+              becomes the foundation of your community&apos;s trust.
             </p>
           </div>
 
           <div className="space-y-2">
-            <Label>AI 语音人格（§2.4 预设人格，不做声音克隆）</Label>
+            <Label>AI voice persona (§2.4 — preset personas, no voice cloning)</Label>
             <Select value={personaId} onValueChange={(v) => v && setPersonaId(v)}>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -296,15 +301,16 @@ export default function CreatePage() {
           </div>
 
           <div className="space-y-2 rounded-md border p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between gap-3">
               <div>
-                <p className="text-sm font-medium">Solana 链上锚定（推荐，可选）</p>
+                <p className="text-sm font-medium">Anchor on Solana (recommended, optional)</p>
                 <p className="text-xs text-muted-foreground">
-                  用 Memo 交易把内容哈希写入 Solana Devnet，作为内容存在与时间戳的公开证明。
+                  A Memo transaction writes a hash of your content to Solana
+                  Devnet as public, timestamped proof of existence.
                 </p>
               </div>
               {anchorSig ? (
-                <Badge className="bg-green-600">已锚定 ✓</Badge>
+                <Badge className="bg-green-600">Anchored ✓</Badge>
               ) : (
                 <Button
                   type="button"
@@ -313,7 +319,7 @@ export default function CreatePage() {
                   disabled={!formValid || anchoring}
                   onClick={anchorToChain}
                 >
-                  {anchoring ? "锚定中…" : connected ? "锚定到 Devnet" : "连接 Phantom"}
+                  {anchoring ? "Anchoring…" : connected ? "Anchor on Devnet" : "Connect Phantom"}
                 </Button>
               )}
             </div>
@@ -325,7 +331,7 @@ export default function CreatePage() {
             disabled={!formValid || submitting}
             onClick={submit}
           >
-            {submitting ? "生成语音并发布中…（约几秒）" : "生成 AI 语音并发布"}
+            {submitting ? "Generating voice & publishing… (a few seconds)" : "Generate AI voice & publish"}
           </Button>
         </CardContent>
       </Card>
