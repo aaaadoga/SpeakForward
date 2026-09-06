@@ -8,6 +8,7 @@ import {
   WalletProvider,
 } from "@solana/wallet-adapter-react";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { toast } from "sonner";
 
 // §技术决议 Q4: 纯客户端集成，服务端零链上参与，平台不持有任何密钥
 // §2.2: 平台绝不持有、路由或托管资金
@@ -21,7 +22,16 @@ export function WalletProviders({ children }: { children: ReactNode }) {
 
   return (
     <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect={false}>
+      <WalletProvider
+        wallets={wallets}
+        autoConnect={false}
+        onError={(err) => {
+          // 连接/签名失败时必须可见，不能静默吞掉（§5：故障可见是降级判断的前提）
+          const msg = err instanceof Error ? err.message : String(err);
+          toast.error("钱包操作失败: " + msg);
+          console.error("[wallet]", err);
+        }}
+      >
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
