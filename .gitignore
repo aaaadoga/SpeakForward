@@ -51,3 +51,11 @@ scripts/.xiaolin-wallet.json
 
 # 本地交付资产：demo 旁白音频
 demo-narration/
+
+# 内部工作文档，不在 GitHub 展示（本地保留）
+AGENTS.md
+CLAUDE.md
+docs/TEST_CHECKLIST.md
+docs/RECORDING_PLAN.md
+docs/DEVTO_POST.md
+scripts/
