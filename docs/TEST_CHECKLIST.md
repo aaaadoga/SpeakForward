@@ -63,3 +63,41 @@
 - ElevenLabs：key 有效、自建音色可调用、`ai_disclosure:true` 被接受、返回有效 mp3
 - Supabase：表已建、RLS 策略生效、storage 桶公开可读、小林音频 200/843KB
 - 生产部署 Ready 且英文版内容经外部抓取确认
+
+
+---
+
+# 🔎 自动化验收结果（2026-09-06，由 AI 浏览器自动化执行）
+
+## 通过（15 条）
+
+| 编号 | 结果 | 备注 |
+|---|---|---|
+| A03 | ✅ | 真实点击后音频正常播放（52.7s，进度递增）。注意：自动化环境的"无手势自动播放"被浏览器策略拦截属预期，真人点击无碍 |
+| A08 | ✅ | 弹窗无关闭按钮、点外部不消失、未勾选时确认键禁用 |
+| A09 | ✅ | 刷新后不再弹窗（声明已持久化） |
+| A10 | ✅ | 空表单发布键禁用 |
+| A11 | ✅ | 1300/1200 计数变红、发布键禁用；改回正常文本即恢复 |
+| A12 | ✅ | 免费预览按钮切换为 "Stop preview"，speechSynthesis 实际发声 |
+| A13 | ✅ | 完整发布流成功：真实 ElevenLabs 生成 8.9s 英文语音并入库，项目页完整渲染 |
+| A18 | ✅ | 承诺写入 localStorage、徽章显示（自动化环境的坐标点击派发有怪癖，页面内触发验证） |
+| A19 | ✅ | 刷新后保持；清空 localStorage 后消失（证明仅存本地） |
+| A20 | ✅ | 6 条设计决策全部渲染 |
+| B01 | ✅ | 发送成功提示 + 垃圾箱提示 + 每小时限额提示均在 |
+| B02 | ✅* | 经一次性邮箱(mail.tm)实测，Supabase 邮件数秒内真实送达（*非你常用邮箱服务商） |
+| B03 | ✅ | 未连接钱包点捐赠 → 正确弹出 "Connect a wallet on Solana to continue" 弹窗 |
+| C05 | ✅ | 375px 视口无横向滚动 |
+| C06/C01/C02/C03/C04/C08/C10 | ✅ | 见前文快照与截图 |
+
+## 🔴 发现并已报告的 BUG（1 个，P0）
+
+**A07 魔法链接重定向错误**：真实邮件中的验证链接 `redirect_to=http://localhost:3000`（Supabase 项目 Site URL 仍是建项目默认值，且生产域名不在 Redirect URLs 允许列表）。真实用户点邮件链接会落到 localhost，登录无法完成。
+**修复**：Supabase Dashboard → Authentication → URL Configuration → Site URL 改为 `https://speakforward.vercel.app`，Redirect URLs 添加 `https://speakforward.vercel.app/**`。修复后 A07/A08/A09 的真实邮件路径即可闭环。
+
+## 无法自动化（需真人/钱包，共 6 条）
+
+A14 锚定（需 Phantom 签名）、A15 锚定失败模拟、A16 链上捐赠（需 Phantom + 测试 SOL）、B04/B05 Phantom 弹窗内取消、B06 收款地址核对、C07 ElevenLabs 故障降级、C09 暗色模式（自动化环境无法模拟系统主题）。
+
+## 清理确认
+
+QA 用户（2个）、测试项目 "A voice for our sky"、其音频对象、浏览器会话 cookie 已全部删除；线上仅剩小林的演示项目。
