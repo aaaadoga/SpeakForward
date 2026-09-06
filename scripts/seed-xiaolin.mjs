@@ -14,17 +14,17 @@ const HDRS = { apikey: SERVICE, Authorization: `Bearer ${SERVICE}`, "Content-Typ
 // §2.5: 小林 —— 19岁气候倡导者，因健康原因言语受限
 const XIAOLIN = {
   email: "xiaolin.lin@example.com",
-  title: "为我的城市，为我们的天空发声",
-  vision: `大家好，我是小林，今年19岁。
+  title: "Speaking up for my city, for our sky",
+  vision: `Hi everyone, I'm Xiao Lin, and I'm 19 years old.
 
-三年前，一场疾病让我的声带再也无法支撑一次完整的演讲。医生说也许会恢复，也许不会。但我想为气候做的事，不能等我的嗓子。
+Three years ago, an illness took away my ability to deliver a single complete speech. The doctors say it may recover — or it may not. But the climate work I want to do cannot wait for my voice.
 
-在我生活的城市，我见过雾霾天里依然坚持骑车上学的同学们，见过河边捡了整整一个暑假垃圾的志愿者团队。这些年轻人不需要有人替他们行动，但需要有人替他们说话——而今天，AI 替我发出了这个声音。
+In my city, I have seen classmates who keep cycling to school through the smog, and a volunteer team that spent an entire summer picking up trash along the river. These young people don't need anyone to act for them — but they do need someone to speak for them. And today, AI is lending me that voice.
 
-我相信，表达的权利不应该被身体状况剥夺。谢谢你听到我。如果你也关心我们头顶同一片天空，欢迎支持我们正在做的社区气候行动。
+I believe the right to express yourself should never be taken away by your health condition. Thank you for hearing me. If you care about the same sky over your head as I do, please support the community climate action we are building.
 
-这不是我的声音，但这是我的心声。`,
-  health: "声带器质性损伤，无法进行超过一分钟的连续说话（长篇演讲不可行）。此说明为自愿公开，未提供医学证明，请您自行判断。",
+This is not my voice, but it is my heart.`,
+  health: "Organic vocal cord injury: I cannot sustain more than a minute of continuous speech, so long speeches are not possible. This statement is voluntary and comes with no medical proof — please judge for yourself.",
   persona: "advocate",
 };
 

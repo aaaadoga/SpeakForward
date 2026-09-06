@@ -23,7 +23,7 @@ In the demo, you'll meet 小林 (Xiao Lin), a 19-year-old climate advocate who c
 
 🔴 **Live demo**: [https://speakforward.vercel.app](https://speakforward.vercel.app)
 
-🎬 **Video demo (2:40, with English subtitles)**: 【在此插入 YouTube/Bilibili 视频链接】
+🎬 **Video demo (2:40, with English subtitles for the narrator)**: 【在此插入 YouTube/Bilibili 视频链接】
 
 Xiao Lin's project page (with her AI-generated voice, public health statement, and Devnet donation ledger): [https://speakforward.vercel.app/projects/499a563e-73f4-45a3-ac51-3e13eb9d4b04](https://speakforward.vercel.app/projects/499a563e-73f4-45a3-ac51-3e13eb9d4b04)
 
