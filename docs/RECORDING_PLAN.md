@@ -1,53 +1,68 @@
-# SpeakForward Demo 录制方案（全免费）
+# SpeakForward Demo 录制方案（全免费 · 旁白为英文 TTS）
 
 > 目标：≤3 分钟（建议 2:30–2:50）、含字幕、小林叙事主线的 demo 视频。
+> **你全程不需要说话**——旁白已用 ElevenLabs 预生成为 6 段英文音频。
 > 全部工具 ¥0。
 
-## 一、免费工具清单
+## 一、工具清单
 
 | 用途 | 工具 | 费用 |
 |---|---|---|
-| 录屏 | **OBS Studio**（obsproject.com，开源） | ¥0 |
-| 剪辑 + 自动字幕 | **剪映**（国内版，capcut.cn）或 CapCut | ¥0（自动字幕全部免费） |
-| 背景音乐 | YouTube Audio Library（studio.youtube.com → 音频库）或剪映曲库 | ¥0 |
-| 旁白 | 你的耳机麦克风（安静房间 + 被子吸音即可） | ¥0 |
+| 录屏 | **OBS Studio**（obsproject.com） | ¥0 |
+| 剪辑 + 字幕 | **剪映**（capcut.cn） | ¥0 |
+| **旁白** | **ElevenLabs 预生成**（见 `demo-narration/` 文件夹，6 段 MP3） | ¥0（消耗免费额度） |
+| 背景音乐 | YouTube Audio Library 或剪映曲库 | ¥0 |
+
+**帖子里可以强调**：连这条视频的旁白都是 ElevenLabs 生成的——全片没有一处真人录音。
 
 ## 二、录制前准备（约 20 分钟）
 
-1. **装 OBS**：设置 → 输出 → 分辨率 1920×1080、帧率 30
-2. **浏览器**：无痕窗口、100% 缩放（Ctrl+0）、隐藏书签栏；提前登录好你的账号（见"魔法链接"注意事项）
-3. **装 Phantom 扩展** → 切 Devnet → 领测试 SOL（用你浏览器领；若 429，换手机热点网络再领）
-4. **预加载页面**（避免录制中等待加载）：
-   - https://speakforward.vercel.app
-   - 小林项目页（见首页卡片）
-   - https://explorer.solana.com（提前搜好你的钱包地址页）
-5. **提前写好你要创建的项目文案**（录成一段 100–200 字的愿景文本，复制粘贴，避免录制中打字）
-6. **旁白提词**：把下面的解说词贴在第二块屏幕/手机上
+1. **装 OBS**：输出分辨率 1920×1080、30fps
+2. **浏览器**：无痕窗口、100% 缩放、隐藏书签栏；提前用魔法链接登录好你的账号
+3. **装 Phantom** → 切 Devnet → 领测试 SOL（429 就换手机热点）
+4. **预加载页面**：首页、小林项目页、explorer.solana.com（提前搜好你的钱包）
+5. **提前写好你要创建的项目英文文案**（录制时粘贴，避免打字；可直接用测试时那段 "A voice for our sky" 的文本思路，但发布后记得删掉测试项目）
+6. **把 `demo-narration/` 里 6 段 MP3 拖进剪映音频轨**，按分镜对齐
 
-## 三、分镜脚本（总计约 2:40）
+## 三、分镜脚本（总计约 2:40 · 旁白见下方原文）
 
-| 时间 | 画面 | 旁白（中文，配英文字幕） |
+| 时间 | 画面 | 旁白段 |
 |---|---|---|
-| 0:00–0:20 | 黑底白字开场卡："What if you can still change the world, but can no longer say it out loud?" 然后切小林项目页，播放她的 AI 语音 3 秒 | "这是小林。19 岁，气候倡导者。疾病夺走了她连续说话的能力——但没有夺走她发声的权利。" |
-| 0:20–0:40 | 项目页滑动展示：AI 披露徽章、公开健康声明、免责声明横幅 | "在 SpeakForward，AI 语音永远带着披露标识；她的健康状况由她自己公开陈述；平台从不验证身份——判断权在你。" |
-| 0:40–1:10 | 现场操作：点击 Sign in → 输入邮箱 →（切画面）点击邮件里的魔法链接 → 年龄自我声明弹窗打勾确认 | "注册只需要一封邮件的魔法链接，和一次年龄自我声明。没有 KYC，没有医学证明——证明自己生病本身就是特权。" |
-| 1:10–1:55 | 现场操作：Create project → 粘贴愿景文本 → 免费预览（Web Speech）→ 选人格 → 点击 **Anchor on Devnet**（Phantom 弹窗确认）→ 打开 Solana Explorer 展示这笔 Memo 交易 | "她写下愿景，选一个 AI 声音，然后——把内容的哈希写进 Solana。一笔 Memo 交易，公开的、带时间戳的存在证明。没有自定义合约，没有花哨的机制。" |
-| 1:55–2:25 | 现场操作：项目页 → Connect Phantom & Donate → 选 0.01 SOL → Phantom 确认 → 刷新看捐赠记录出现；再演示 Pledge (simulated) 按钮 | "捐赠是点对点的：SOL 从捐赠者的钱包直接到创作者钱包，平台全程碰不到钱。没有钱包的人可以留下'承诺'，存在自己浏览器里。" |
-| 2:25–2:40 | 结尾卡：SpeakForward 标语 "Where young leaders turn words into action, funded by trust." + GitHub 链接 + "Powered by ElevenLabs · Solana Devnet" | "表达权不应该被身体状况剥夺。SpeakForward——以言促行，信任铸就支持。" |
+| 0:00–0:20 | 开场卡 + 小林项目页播放她的 AI 语音 3 秒 | 01 |
+| 0:20–0:40 | 项目页滑动：AI 披露徽章、健康声明、免责声明横幅 | 02 |
+| 0:40–1:10 | Sign in → 魔法链接 → 年龄自我声明弹窗打勾 | 03 |
+| 1:10–1:55 | Create project → 粘贴文本 → Anchor on Devnet → Explorer 展示 Memo 交易 | 04 |
+| 1:55–2:25 | Connect Phantom & Donate 0.01 SOL → Explorer 确认 → Pledge 按钮 | 05 |
+| 2:25–2:40 | 结尾卡：标语 + GitHub 链接 | 06 |
 
-## 四、录制技巧（省时省力）
+## 四、旁白原文（= 字幕文稿，逐段对应 demo-narration/01–06.mp3）
 
-- **分段录**：每个分镜单独录一条，错了只重录那一段；剪辑时拼接
-- **生成语音那一步是实时等待**（约 5–10 秒）：旁白说"while the AI voice is being generated…"填空，或剪掉等待段
-- **Devnet Explorer 加载慢**：提前打开好，录制时只做切换
-- **魔法链接等待邮件**：提前 10 分钟登录好账号；录制时只演示"点击邮件里的链接"那一下（可用手机拍邮件屏幕，或直接录浏览器切到邮箱标签页——建议用网页版邮箱）
-- 字幕：剪映"智能字幕"自动识别 → 逐句校对 → 用"翻译字幕"功能生成英文轨
-- 导出：1080p MP4
+**01** — This is Xiao Lin. She's nineteen, and a climate advocate. An illness took away her ability to speak for more than a minute. It did not take away her right to be heard.
 
-## 五、发布前最后核验（对应 README 检查清单）
+**02** — On SpeakForward, every AI voice carries a visible disclosure. Her health statement is public, written by herself. And the platform never verifies identities — the judgment of trust belongs to you.
 
-- [ ] 视频 ≤3:00，有字幕，小林叙事完整
-- [ ] Live Demo 链接在无痕窗口可打开
-- [ ] 录到了至少一笔 Memo 交易在 Explorer 可见
-- [ ] DEV 帖子三个【占位符】已替换（视频链接、GitHub 嵌入、署名）
-- [ ] 提交后：每天访问一次线上站（防 Supabase 休眠）
+**03** — Signing up takes only an email and a magic link, plus one age self-declaration. No KYC. No medical proof. Asking people to prove that they are sick is, itself, a privilege barrier.
+
+**04** — She writes her vision, picks an AI voice, and then anchors a hash of her content on Solana — a Memo transaction. Public proof of existence, timestamped on-chain. No custom smart contracts. No complexity to audit.
+
+**05** — Donations are peer-to-peer: SOL moves from the donor's wallet directly to the creator's, signed by the donor's own Phantom. The platform never holds, routes, or custodies money. And for people without a wallet, a pledge stays in their own browser.
+
+**06** — The right to speak should not depend on your body. SpeakForward — where young leaders turn words into action, funded by trust.
+
+> 字幕做法：把以上 6 段文字按段贴进剪映文本轨即可（旁白本身就是英文，无需翻译字幕；保留字幕是为了满足 §6"含字幕"的硬性要求，同时利于无声观看）。
+
+## 五、录制技巧
+
+- **分段录**：每个分镜单独录，错了只重录那一段
+- **生成语音等待 5–10 秒**：旁白 04 里"…and then anchors…"正好覆盖，或剪掉等待段
+- **Explorer 加载慢**：提前打开好，录制时只切换
+- **魔法链接**：提前登录好，录制只演示点邮件链接那一下
+- 导出 1080p MP4
+
+## 六、发布前核验
+
+- [ ] 视频 ≤3:00，字幕完整（旁白文稿），小林叙事完整
+- [ ] Live Demo 无痕窗口可打开
+- [ ] 录到至少一笔 Memo 交易在 Explorer 可见
+- [ ] DEV 帖三个【占位符】已替换
+- [ ] 提交后每天访问一次线上站（防 Supabase 休眠）

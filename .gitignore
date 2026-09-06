@@ -48,3 +48,6 @@ SpeakForward说明文档.md
 .vercel
 .env*
 scripts/.xiaolin-wallet.json
+
+# 本地交付资产：demo 旁白音频
+demo-narration/
